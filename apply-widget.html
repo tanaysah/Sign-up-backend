@@ -1,0 +1,1235 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+.sa-portal * { box-sizing: border-box; }
+.sa-portal {
+--bg: #0B0B0B;
+--card: #111111;
+--card-2: #141414;
+--border: rgba(255,255,255,0.08);
+--border-strong: rgba(255,255,255,0.14);
+--input: #161616;
+--input-hover: #1E1E1E;
+--text: #F5F5F5;
+--text-secondary: #B5B5B5;
+--accent: #B68A60;
+--accent-soft: rgba(182,138,96,0.14);
+font-family: 'Raleway', sans-serif;
+background: var(--bg);
+color: var(--text);
+padding: 90px 24px 100px;
+animation: saFadeUp 0.6s ease both;
+}
+@keyframes saFadeUp {
+from { opacity: 0; transform: translateY(14px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.sa-portal-inner {
+max-width: 1140px;
+margin: 0 auto;
+}
+/* ---------- Header ---------- */
+.sa-portal-header { max-width: 720px; margin: 0 auto 60px; text-align: center; }
+.sa-portal-eyebrow {
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 2.4px;
+text-transform: uppercase;
+color: var(--accent);
+margin-bottom: 18px;
+}
+.sa-portal-title {
+font-family: 'Cormorant Garamond', serif;
+font-weight: 600;
+font-size: clamp(34px, 5vw, 52px);
+line-height: 1.1;
+margin: 0 0 18px;
+color: var(--text);
+}
+.sa-portal-lead {
+font-size: 15.5px;
+line-height: 1.7;
+color: var(--text-secondary);
+margin: 0;
+font-weight: 300;
+}
+/* ---------- JD reference note ---------- */
+.sa-jd-note {
+max-width: 720px;
+margin: 0 auto 60px;
+font-size: 13.5px;
+line-height: 1.7;
+color: var(--text-secondary);
+background: var(--accent-soft);
+border: 1px solid rgba(182,138,96,0.35);
+border-radius: 12px;
+padding: 18px 24px;
+text-align: center;
+}
+.sa-jd-note a {
+color: var(--text);
+font-weight: 600;
+text-decoration: underline;
+text-decoration-color: var(--accent);
+text-underline-offset: 3px;
+transition: color 0.25s ease;
+}
+.sa-jd-note a:hover { color: var(--accent); }
+/* ---------- Sections ---------- */
+.sa-section {
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: 16px;
+padding: 48px 52px;
+margin-bottom: 80px;
+}
+.sa-section:last-of-type { margin-bottom: 0; }
+.sa-section-head { margin-bottom: 40px; }
+.sa-section-eyebrow {
+display: block;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 2.2px;
+text-transform: uppercase;
+color: var(--accent);
+margin-bottom: 10px;
+}
+.sa-section-title {
+font-family: 'Cormorant Garamond', serif;
+font-size: 27px;
+font-weight: 600;
+margin: 0;
+color: var(--text);
+}
+/* ---------- Grid ---------- */
+.sa-grid {
+display: grid;
+grid-template-columns: repeat(12, 1fr);
+column-gap: 28px;
+row-gap: 32px;
+}
+.sa-col-12 { grid-column: span 12; }
+.sa-col-6 { grid-column: span 6; }
+.sa-field label {
+display: block;
+font-size: 13.5px;
+font-weight: 600;
+color: var(--text);
+margin-bottom: 9px;
+letter-spacing: 0.2px;
+}
+.sa-field .sa-optional {
+font-weight: 400;
+color: var(--text-secondary);
+font-size: 12px;
+text-transform: none;
+}
+.sa-field .sa-hint {
+display: block;
+font-size: 12px;
+color: var(--text-secondary);
+font-weight: 400;
+margin-top: 3px;
+}
+/* ---------- Inputs ---------- */
+.sa-field input[type="text"],
+.sa-field input[type="email"],
+.sa-field input[type="tel"],
+.sa-field input[type="date"],
+.sa-field input[type="number"],
+.sa-field textarea,
+.sa-field select {
+width: 100%;
+background: var(--input);
+border: 1px solid var(--border);
+border-radius: 11px;
+color: var(--text);
+font-family: 'Raleway', sans-serif;
+font-size: 14.5px;
+padding: 15px 17px;
+transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.sa-field input::placeholder, .sa-field textarea::placeholder { color: #6E6E6E; }
+.sa-field input:hover, .sa-field textarea:hover, .sa-field select:hover {
+background: var(--input-hover);
+border-color: var(--border-strong);
+}
+.sa-field input:focus, .sa-field textarea:focus, .sa-field select:focus {
+outline: none;
+background: var(--input-hover);
+border-color: var(--accent);
+box-shadow: 0 0 0 4px rgba(182,138,96,0.15);
+}
+.sa-field select {
+appearance: none;
+-webkit-appearance: none;
+background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='11' height='7'><path d='M0 0l5.5 7 5.5-7z' fill='%23B68A60'/></svg>");
+background-repeat: no-repeat;
+background-position: right 18px center;
+cursor: pointer;
+padding-right: 44px;
+}
+.sa-field textarea {
+min-height: 160px;
+resize: vertical;
+line-height: 1.6;
+}
+.sa-combo { position: relative; }
+.sa-combo-list {
+display: none;
+position: absolute;
+top: calc(100% + 6px);
+left: 0;
+right: 0;
+max-height: 240px;
+overflow-y: auto;
+background: var(--card-2);
+border: 1px solid var(--border-strong);
+border-radius: 11px;
+z-index: 20;
+box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
+}
+.sa-combo-list.sa-show { display: block; }
+.sa-combo-option {
+padding: 11px 16px;
+font-size: 14px;
+color: var(--text);
+cursor: pointer;
+transition: background 0.15s ease;
+}
+.sa-combo-option:hover, .sa-combo-option.sa-active { background: var(--accent-soft); color: var(--accent); }
+.sa-combo-option.sa-combo-other {
+border-top: 1px solid var(--border);
+font-style: italic;
+color: var(--text-secondary);
+}
+.sa-combo-option.sa-combo-other:hover { color: var(--accent); }
+.sa-combo-empty { padding: 11px 16px; font-size: 13px; color: var(--text-secondary); }
+.sa-toggle-row {
+display: flex;
+align-items: flex-start;
+gap: 16px;
+margin-bottom: 32px;
+}
+.sa-toggle-switch {
+position: relative;
+flex: 0 0 auto;
+width: 46px;
+height: 26px;
+display: inline-block;
+}
+.sa-toggle-switch input { opacity: 0; width: 0; height: 0; }
+.sa-toggle-slider {
+position: absolute;
+inset: 0;
+background: var(--input);
+border: 1px solid var(--border-strong);
+border-radius: 999px;
+cursor: pointer;
+transition: background 0.25s ease;
+}
+.sa-toggle-slider::before {
+content: "";
+position: absolute;
+width: 18px;
+height: 18px;
+left: 3px;
+top: 3px;
+background: var(--text-secondary);
+border-radius: 50%;
+transition: transform 0.25s ease, background 0.25s ease;
+}
+.sa-toggle-switch input:checked + .sa-toggle-slider { background: var(--accent-soft); border-color: var(--accent); }
+.sa-toggle-switch input:checked + .sa-toggle-slider::before { transform: translateX(20px); background: var(--accent); }
+.sa-toggle-label-text { font-size: 13.5px; line-height: 1.6; }
+.sa-toggle-label-text strong { display: block; color: var(--text); font-weight: 600; margin-bottom: 3px; }
+.sa-toggle-label-text span { color: var(--text-secondary); font-weight: 300; }
+.sa-rec-fields {
+display: none;
+padding-top: 32px;
+border-top: 1px solid var(--border);
+}
+.sa-rec-fields.sa-show { display: grid; }
+.sa-verify-row { display: flex; gap: 8px; }
+.sa-verify-row input[type="email"],
+.sa-verify-row input[type="tel"] { flex: 1; min-width: 0; }
+.sa-country-select { width: 80px !important; flex: 0 0 80px !important; padding: 15px 22px 15px 10px !important; font-size: 13px; }
+.sa-verify-btn {
+flex: 0 0 auto;
+background: transparent;
+border: 1px solid var(--accent);
+color: var(--accent);
+font-family: 'Raleway', sans-serif;
+font-size: 12.5px;
+font-weight: 700;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding: 0 18px;
+border-radius: 11px;
+cursor: pointer;
+transition: background 0.2s ease, color 0.2s ease;
+}
+.sa-verify-btn:hover { background: var(--accent-soft); }
+.sa-verify-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.sa-verify-btn.sa-verified {
+background: var(--accent);
+color: #0B0B0B;
+border-color: var(--accent);
+}
+.sa-otp-row {
+display: none;
+gap: 8px;
+margin-top: 10px;
+}
+.sa-otp-row.sa-show { display: flex; }
+.sa-otp-row input {
+flex: 0 0 140px;
+letter-spacing: 3px;
+}
+.sa-verify-status {
+font-size: 12px;
+margin-top: 6px;
+min-height: 15px;
+}
+.sa-verify-status.sa-status-ok { color: #9BC98A; }
+.sa-verify-status.sa-status-err { color: #D98B78; }
+.sa-word-count {
+text-align: right;
+font-size: 12px;
+color: var(--text-secondary);
+margin-top: 7px;
+}
+.sa-word-count.sa-over { color: #D98B78; font-weight: 600; }
+/* ---------- Upload dropzone ---------- */
+.sa-file-wrap {
+border: 1.5px dashed var(--border-strong);
+border-radius: 14px;
+padding: 36px 24px;
+text-align: center;
+cursor: pointer;
+transition: border-color 0.25s ease, background 0.25s ease;
+background: var(--input);
+}
+.sa-file-wrap:hover { border-color: var(--accent); background: var(--input-hover); }
+.sa-file-wrap.sa-has-file { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.sa-file-icons { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.sa-file-icons svg { width: 26px; height: 26px; }
+.sa-file-title { font-size: 14.5px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.sa-file-sub { font-size: 12.5px; color: var(--text-secondary); }
+/* ---------- Checkboxes ---------- */
+.sa-checkbox-row {
+display: flex;
+align-items: flex-start;
+gap: 14px;
+margin-bottom: 20px;
+}
+.sa-checkbox-row:last-child { margin-bottom: 0; }
+.sa-checkbox-row input[type="checkbox"] {
+appearance: none;
+-webkit-appearance: none;
+width: 20px;
+height: 20px;
+min-width: 20px;
+border-radius: 6px;
+border: 1.5px solid var(--border-strong);
+background: var(--input);
+margin-top: 2px;
+cursor: pointer;
+position: relative;
+transition: border-color 0.2s ease, background 0.2s ease;
+}
+.sa-checkbox-row input[type="checkbox"]:hover { border-color: var(--accent); }
+.sa-checkbox-row input[type="checkbox"]:checked {
+background: var(--accent);
+border-color: var(--accent);
+}
+.sa-checkbox-row input[type="checkbox"]:checked::after {
+content: "";
+position: absolute;
+left: 6px;
+top: 2px;
+width: 5px;
+height: 10px;
+border: solid #0B0B0B;
+border-width: 0 2px 2px 0;
+transform: rotate(40deg);
+}
+.sa-checkbox-row label {
+font-size: 13.5px;
+line-height: 1.6;
+color: var(--text-secondary);
+font-weight: 400;
+margin: 0;
+}
+/* ---------- Submit ---------- */
+.sa-submit-wrap { text-align: center; margin-top: 12px; }
+.sa-submit-btn {
+display: inline-block;
+background: var(--accent);
+color: #0B0B0B;
+border: none;
+padding: 18px 56px;
+font-family: 'Raleway', sans-serif;
+font-size: 13.5px;
+font-weight: 700;
+letter-spacing: 1.4px;
+text-transform: uppercase;
+border-radius: 999px;
+cursor: pointer;
+transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+box-shadow: 0 14px 30px -10px rgba(182,138,96,0.5);
+}
+.sa-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 38px -10px rgba(182,138,96,0.65); background: #c69a70; }
+.sa-submit-btn:active { transform: translateY(0); }
+.sa-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.sa-trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
+.sa-trust-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-secondary); background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 5px 11px; border-radius: 999px; }
+.sa-trust-methods { text-align: center; font-size: 11px; color: var(--text-secondary); margin-top: 10px; letter-spacing: 0.2px; }
+.sa-fee-note { font-size: 13px; color: var(--text-secondary); margin: 18px 0 0; }
+.sa-legal-note {
+font-size: 11.5px;
+line-height: 1.6;
+color: rgba(181,181,181,0.6);
+max-width: 480px;
+margin: 20px auto 0;
+padding-top: 18px;
+border-top: 1px solid var(--border);
+}
+.sa-contact-note { font-size: 12px; color: var(--text-secondary); margin: 10px 0 0; }
+.sa-contact-note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.sa-status {
+margin: 20px auto 0;
+max-width: 520px;
+font-size: 13.5px;
+padding: 14px 18px;
+border-radius: 10px;
+display: none;
+}
+.sa-status.sa-show { display: block; }
+.sa-status.sa-error { background: rgba(217,139,120,0.12); color: #D98B78; border: 1px solid rgba(217,139,120,0.3); }
+.sa-status.sa-success { background: rgba(139,182,120,0.12); color: #9BC98A; border: 1px solid rgba(139,182,120,0.3); }
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+.sa-section { padding: 36px 28px; margin-bottom: 60px; }
+}
+@media (max-width: 640px) {
+.sa-portal { padding: 60px 16px 70px; }
+.sa-section { padding: 28px 20px; border-radius: 12px; margin-bottom: 44px; }
+.sa-col-6 { grid-column: span 12; }
+.sa-submit-btn { width: 100%; }
+}
+</style>
+<div class="sa-portal">
+<div class="sa-portal-inner">
+<div class="sa-portal-header">
+<div class="sa-portal-eyebrow">Seraphic Atelier</div>
+<h1 class="sa-portal-title">Internship Application</h1>
+<p class="sa-portal-lead">Complete the form below to apply. Please review the role details before submitting.</p>
+</div>
+<div class="sa-jd-note">
+Please review the full internship details before applying:
+<a href="https://drive.google.com/drive/folders/1ZRnfMRGYbHMDy2moVzuYa86R2bDpGxJe?usp=sharing" target="_blank" rel="noopener">View Internship Details</a>
+</div>
+<form id="sa-apply-form">
+<section class="sa-section">
+<div class="sa-section-head">
+<span class="sa-section-eyebrow">Section 1</span>
+<h2 class="sa-section-title">Personal Information</h2>
+</div>
+<div class="sa-grid">
+<div class="sa-field sa-col-12">
+<label for="sa-name">Full Name *</label>
+<input type="text" id="sa-name" required />
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-email">Email Address *</label>
+<div class="sa-verify-row">
+<input type="email" id="sa-email" required />
+<button type="button" class="sa-verify-btn" id="sa-verify-email-btn">Verify</button>
+</div>
+<div class="sa-otp-row" id="sa-otp-row-email">
+<input type="text" id="sa-otp-email" placeholder="6-digit code" maxlength="6" inputmode="numeric" />
+<button type="button" class="sa-verify-btn" id="sa-confirm-otp-email-btn">Confirm</button>
+</div>
+<div class="sa-verify-status" id="sa-email-verify-status"></div>
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-phone">Mobile Number *</label>
+<div class="sa-verify-row">
+<select id="sa-phone-country" class="sa-country-select">
+<option value="+91" selected>+91</option>
+<option value="+1">+1</option>
+<option value="+44">+44</option>
+<option value="+61">+61</option>
+<option value="+971">+971</option>
+<option value="+65">+65</option>
+<option value="+974">+974</option>
+<option value="+966">+966</option>
+<option value="+92">+92</option>
+<option value="+880">+880</option>
+<option value="+94">+94</option>
+<option value="+977">+977</option>
+<option value="+86">+86</option>
+<option value="+81">+81</option>
+<option value="+49">+49</option>
+<option value="+33">+33</option>
+</select>
+<input type="tel" id="sa-phone" required pattern="[0-9]{6,12}" placeholder="Mobile number" />
+<button type="button" class="sa-verify-btn" id="sa-verify-phone-btn">Verify</button>
+</div>
+<div class="sa-otp-row" id="sa-otp-row-phone">
+<input type="text" id="sa-otp-phone" placeholder="6-digit code" maxlength="6" inputmode="numeric" />
+<button type="button" class="sa-verify-btn" id="sa-confirm-otp-phone-btn">Confirm</button>
+</div>
+<div class="sa-verify-status" id="sa-phone-verify-status"></div>
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-dob">Date of Birth *</label>
+<input type="date" id="sa-dob" required max="2009-12-31" />
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-linkedin">LinkedIn Profile</label>
+<input type="text" id="sa-linkedin" placeholder="linkedin.com/in/yourname" />
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-referral">Referral Code <span class="sa-optional">(optional)</span></label>
+<input type="text" id="sa-referral" maxlength="2" pattern="[0-9]{2}" placeholder="e.g. 07" />
+<span class="sa-hint">2-digit code, if someone referred you</span>
+</div>
+</div>
+</section>
+<section class="sa-section">
+<div class="sa-section-head">
+<span class="sa-section-eyebrow">Section 2</span>
+<h2 class="sa-section-title">Academic Information</h2>
+</div>
+<div class="sa-grid">
+<div class="sa-field sa-col-6">
+<label for="sa-college">College / University *</label>
+<input type="text" id="sa-college" required />
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-degree">Degree Pursuing *</label>
+<div class="sa-combo">
+<input type="text" id="sa-degree" required autocomplete="off" placeholder="Start typing, e.g. B.Tech" />
+<div class="sa-combo-list" id="sa-degree-list"></div>
+</div>
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-specialization">Specialization / Major *</label>
+<input type="text" id="sa-specialization" required />
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-semester">Current Semester *</label>
+<select id="sa-semester" required>
+<option value="" disabled selected>Select semester</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+</select>
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-gradyear">Expected Graduation Year *</label>
+<select id="sa-gradyear" required>
+<option value="" disabled selected>Select year</option>
+<option value="2024">2024</option>
+<option value="2025">2025</option>
+<option value="2026">2026</option>
+<option value="2027">2027</option>
+<option value="2028">2028</option>
+<option value="2029">2029</option>
+<option value="2030">2030</option>
+<option value="2031">2031</option>
+<option value="2032">2032</option>
+</select>
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-cgpa">Current CGPA (Scale of 10) *</label>
+<input type="text" id="sa-cgpa" required placeholder="e.g. 8.4" />
+</div>
+</div>
+</section>
+<section class="sa-section">
+<div class="sa-section-head">
+<span class="sa-section-eyebrow">Section 3</span>
+<h2 class="sa-section-title">Internship Application</h2>
+</div>
+<div class="sa-grid">
+<div class="sa-field sa-col-6">
+<label for="sa-department">Department Applying For *</label>
+<select id="sa-department" required>
+<option value="" disabled selected>Select a department</option>
+<option value="R&D">Research &amp; Development (R&amp;D)</option>
+<option value="Technology">Technology Department</option>
+</select>
+</div>
+<div class="sa-field sa-col-12">
+<label for="sa-q-about">Tell us about yourself. (Maximum 200 words) *</label>
+<textarea id="sa-q-about" required data-maxwords="200"></textarea>
+<div class="sa-word-count" data-counter-for="sa-q-about">0 / 200 words</div>
+</div>
+<div class="sa-field sa-col-12">
+<label for="sa-q-motivation">What motivates you to apply for this internship at Seraphic Atelier? (Maximum 200 words) *</label>
+<textarea id="sa-q-motivation" required data-maxwords="200"></textarea>
+<div class="sa-word-count" data-counter-for="sa-q-motivation">0 / 200 words</div>
+</div>
+<div class="sa-field sa-col-12">
+<label for="sa-q-fit">Why do you believe you are a strong fit for the role you are applying for? Please support your answer with relevant skills, experiences, or achievements. (Maximum 250 words) *</label>
+<textarea id="sa-q-fit" required data-maxwords="250"></textarea>
+<div class="sa-word-count" data-counter-for="sa-q-fit">0 / 250 words</div>
+</div>
+<div class="sa-field sa-col-12">
+<label for="sa-q-achievement">Describe one project, achievement, or experience that you are most proud of. Why is it meaningful to you? (Maximum 250 words) *</label>
+<textarea id="sa-q-achievement" required data-maxwords="250"></textarea>
+<div class="sa-word-count" data-counter-for="sa-q-achievement">0 / 250 words</div>
+</div>
+<div class="sa-field sa-col-12">
+<label for="sa-q-ai">Describe a situation where you used technology or AI to improve your productivity, solve a problem, or complete a project more effectively. (Maximum 250 words) *</label>
+<textarea id="sa-q-ai" required data-maxwords="250"></textarea>
+<div class="sa-word-count" data-counter-for="sa-q-ai">0 / 250 words</div>
+</div>
+</div>
+</section>
+<section class="sa-section">
+<div class="sa-section-head">
+<span class="sa-section-eyebrow">Section 4</span>
+<h2 class="sa-section-title">Documents</h2>
+</div>
+<div class="sa-grid">
+<div class="sa-field sa-col-12">
+<label>Upload your Resume / Curriculum Vitae (PDF only) *</label>
+<div class="sa-file-wrap" id="sa-file-wrap">
+<div class="sa-file-icons">
+<svg viewBox="0 0 24 24" fill="none" stroke="#B68A60" stroke-width="1.6"><path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="#B68A60" stroke-width="1.6"><path d="M6 2h9l5 5v13a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="sa-file-title" id="sa-file-label">Click to upload your resume</div>
+<div class="sa-file-sub">PDF only, up to 5MB</div>
+</div>
+<input type="file" id="sa-resume" accept="application/pdf" style="display:none" required />
+</div>
+<div class="sa-field sa-col-12">
+<label>Upload your Photograph (JPG / PNG) *</label>
+<div class="sa-file-wrap" id="sa-photo-wrap">
+<div class="sa-file-icons">
+<svg viewBox="0 0 24 24" fill="none" stroke="#B68A60" stroke-width="1.6"><path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="#B68A60" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="10" r="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 16l-5.5-5.5L4 21" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="sa-file-title" id="sa-photo-label">Click to upload your photograph</div>
+<div class="sa-file-sub">JPG or PNG, up to 5MB</div>
+</div>
+<input type="file" id="sa-photo" accept="image/jpeg,image/png" style="display:none" required />
+</div>
+<div class="sa-field sa-col-12">
+<label for="sa-portfolio">Portfolio / GitHub / Personal Website <span class="sa-optional">(optional)</span></label>
+<input type="text" id="sa-portfolio" placeholder="e.g. github.com/yourname" />
+</div>
+</div>
+</section>
+<section class="sa-section">
+<div class="sa-section-head">
+<span class="sa-section-eyebrow">Section 5</span>
+<h2 class="sa-section-title">Faculty Recommendation <span class="sa-optional">(Optional)</span></h2>
+</div>
+<div class="sa-toggle-row">
+<label class="sa-toggle-switch">
+<input type="checkbox" id="sa-rec-toggle" />
+<span class="sa-toggle-slider"></span>
+</label>
+<div class="sa-toggle-label-text">
+<strong>Do you have a professor or college faculty member who can recommend you?</strong>
+<span>Turn this on to share their details. We will contact them directly to confirm the recommendation.</span>
+</div>
+</div>
+<div class="sa-grid sa-rec-fields" id="sa-rec-fields">
+<div class="sa-field sa-col-6">
+<label for="sa-rec-name">Recommender's Full Name *</label>
+<input type="text" id="sa-rec-name" />
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-rec-title">Title / Designation *</label>
+<input type="text" id="sa-rec-title" placeholder="e.g. Professor, Assistant Professor, HOD" />
+</div>
+<div class="sa-field sa-col-12">
+<label for="sa-rec-institution">Their College / University *</label>
+<input type="text" id="sa-rec-institution" />
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-rec-email">Official College Email *</label>
+<input type="email" id="sa-rec-email" placeholder="name@college.edu" />
+<div class="sa-verify-status" id="sa-rec-email-verify-status"></div>
+<span class="sa-hint">Must be an official institutional email — personal addresses (Gmail, Yahoo, etc.) aren't accepted.</span>
+</div>
+<div class="sa-field sa-col-6">
+<label for="sa-rec-phone">Recommender's Mobile Number *</label>
+<div class="sa-verify-row">
+<select id="sa-rec-phone-country" class="sa-country-select">
+<option value="+91" selected>+91</option>
+<option value="+1">+1</option>
+<option value="+44">+44</option>
+<option value="+61">+61</option>
+<option value="+971">+971</option>
+<option value="+65">+65</option>
+</select>
+<input type="tel" id="sa-rec-phone" pattern="[0-9]{6,12}" placeholder="Mobile number" />
+</div>
+</div>
+</div>
+</section>
+<section class="sa-section">
+<div class="sa-section-head">
+<span class="sa-section-eyebrow">Section 6</span>
+<h2 class="sa-section-title">Declaration</h2>
+</div>
+<div class="sa-checkbox-row">
+<input type="checkbox" id="sa-declare-read" checked />
+<label for="sa-declare-read">I have read the full internship details. *</label>
+</div>
+<div class="sa-checkbox-row">
+<input type="checkbox" id="sa-declare-accurate" required checked />
+<label for="sa-declare-accurate">I certify that all information provided in this application is true and accurate. *</label>
+</div>
+<div class="sa-checkbox-row">
+<input type="checkbox" id="sa-declare-noguarantee" required checked />
+<label for="sa-declare-noguarantee">I understand that submitting an application does not guarantee selection and that all applications are subject to Seraphic Atelier's selection process. *</label>
+</div>
+</section>
+<div class="sa-submit-wrap">
+<button type="submit" class="sa-submit-btn" id="sa-submit-btn">Pay &amp; Submit Application</button>
+<div class="sa-trust-row">
+<span class="sa-trust-badge">🔒 Secured by Razorpay</span>
+<span class="sa-trust-badge">🔐 SSL Encrypted</span>
+<span class="sa-trust-badge">🛡️ 256-bit Encryption</span>
+</div>
+<div class="sa-trust-methods">UPI · Cards · Netbanking · Wallets · EMI · Pay Later · Bank Transfer</div>
+<p class="sa-fee-note">A non-refundable registration fee applies. You'll be redirected to secure Razorpay checkout.</p>
+<p class="sa-legal-note">This nominal application fee exists solely to filter genuine applicants and deter spam submissions — it does not guarantee selection, employment, or any contractual obligation with Seraphic Atelier.</p>
+<p class="sa-contact-note">Questions? Reach us at <a href="mailto:careers@seraphicatelier.com">careers@seraphicatelier.com</a></p>
+<div class="sa-status" id="sa-status"></div>
+</div>
+</form>
+</div>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+(function () {
+var BACKEND_URL = "https://YOUR-BACKEND.onrender.com"; // <-- replace after deploying backend
+var RAZORPAY_KEY_ID = "rzp_live_XXXXXXXXXX"; // <-- your Razorpay public key id
+var form = document.getElementById('sa-apply-form');
+var fileInput = document.getElementById('sa-resume');
+var fileWrap = document.getElementById('sa-file-wrap');
+var fileLabel = document.getElementById('sa-file-label');
+var photoInput = document.getElementById('sa-photo');
+var photoWrap = document.getElementById('sa-photo-wrap');
+var photoLabel = document.getElementById('sa-photo-label');
+var statusBox = document.getElementById('sa-status');
+var submitBtn = document.getElementById('sa-submit-btn');
+fileWrap.addEventListener('click', function () { fileInput.click(); });
+fileInput.addEventListener('change', function () {
+if (fileInput.files.length) {
+fileWrap.classList.add('sa-has-file');
+fileLabel.textContent = fileInput.files[0].name;
+}
+});
+photoWrap.addEventListener('click', function () { photoInput.click(); });
+photoInput.addEventListener('change', function () {
+if (photoInput.files.length) {
+photoWrap.classList.add('sa-has-file');
+photoLabel.textContent = photoInput.files[0].name;
+}
+});
+function countWords(str) {
+var trimmed = str.trim();
+return trimmed === '' ? 0 : trimmed.split(/\s+/).length;
+}
+function normalizeUrl(value) {
+var v = (value || '').trim();
+if (v === '') return '';
+if (!/^https?:\/\//i.test(v)) v = 'https://' + v;
+return v;
+}
+function isValidEmail(value) {
+var re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+return re.test((value || '').trim());
+}
+var emailVerified = false;
+var phoneVerified = false;
+var emailInput = document.getElementById('sa-email');
+var verifyEmailBtn = document.getElementById('sa-verify-email-btn');
+var otpRowEmail = document.getElementById('sa-otp-row-email');
+var otpEmailInput = document.getElementById('sa-otp-email');
+var confirmOtpEmailBtn = document.getElementById('sa-confirm-otp-email-btn');
+var emailVerifyStatus = document.getElementById('sa-email-verify-status');
+var phoneInput = document.getElementById('sa-phone');
+var phoneCountrySelect = document.getElementById('sa-phone-country');
+var verifyPhoneBtn = document.getElementById('sa-verify-phone-btn');
+var otpRowPhone = document.getElementById('sa-otp-row-phone');
+var otpPhoneInput = document.getElementById('sa-otp-phone');
+var confirmOtpPhoneBtn = document.getElementById('sa-confirm-otp-phone-btn');
+var phoneVerifyStatus = document.getElementById('sa-phone-verify-status');
+function fullPhone() {
+return phoneCountrySelect.value + phoneInput.value.trim();
+}
+function setVerifyStatus(el, msg, ok) {
+el.textContent = msg;
+el.className = 'sa-verify-status ' + (ok ? 'sa-status-ok' : 'sa-status-err');
+}
+function resetEmailVerification() {
+emailVerified = false;
+verifyEmailBtn.classList.remove('sa-verified');
+verifyEmailBtn.textContent = 'Verify';
+verifyEmailBtn.disabled = false;
+otpRowEmail.classList.remove('sa-show');
+emailInput.readOnly = false;
+emailVerifyStatus.textContent = '';
+}
+function resetPhoneVerification() {
+phoneVerified = false;
+verifyPhoneBtn.classList.remove('sa-verified');
+verifyPhoneBtn.textContent = 'Verify';
+verifyPhoneBtn.disabled = false;
+otpRowPhone.classList.remove('sa-show');
+phoneInput.readOnly = false;
+phoneCountrySelect.disabled = false;
+phoneVerifyStatus.textContent = '';
+}
+emailInput.addEventListener('input', resetEmailVerification);
+phoneInput.addEventListener('input', resetPhoneVerification);
+phoneCountrySelect.addEventListener('change', resetPhoneVerification);
+verifyEmailBtn.addEventListener('click', function () {
+if (!isValidEmail(emailInput.value)) {
+setVerifyStatus(emailVerifyStatus, 'Enter a valid email first.', false);
+return;
+}
+verifyEmailBtn.disabled = true;
+verifyEmailBtn.textContent = 'Sending...';
+fetch(BACKEND_URL + '/api/send-otp', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ type: 'email', value: emailInput.value.trim() })
+})
+.then(function (res) { return res.json(); })
+.then(function (data) {
+verifyEmailBtn.disabled = false;
+verifyEmailBtn.textContent = 'Resend Code';
+if (data.sent) {
+otpRowEmail.classList.add('sa-show');
+setVerifyStatus(emailVerifyStatus, 'Code sent to your email.', true);
+} else {
+setVerifyStatus(emailVerifyStatus, 'Could not send code. Try again.', false);
+}
+})
+.catch(function () {
+verifyEmailBtn.disabled = false;
+verifyEmailBtn.textContent = 'Verify';
+setVerifyStatus(emailVerifyStatus, 'Could not send code. Try again.', false);
+});
+});
+confirmOtpEmailBtn.addEventListener('click', function () {
+var code = otpEmailInput.value.trim();
+if (!code) return;
+confirmOtpEmailBtn.disabled = true;
+fetch(BACKEND_URL + '/api/verify-otp', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ type: 'email', value: emailInput.value.trim(), otp: code })
+})
+.then(function (res) { return res.json(); })
+.then(function (data) {
+confirmOtpEmailBtn.disabled = false;
+if (data.verified) {
+emailVerified = true;
+emailInput.readOnly = true;
+otpRowEmail.classList.remove('sa-show');
+verifyEmailBtn.classList.add('sa-verified');
+verifyEmailBtn.textContent = 'Verified';
+verifyEmailBtn.disabled = true;
+setVerifyStatus(emailVerifyStatus, 'Email verified.', true);
+} else {
+setVerifyStatus(emailVerifyStatus, 'Incorrect code. Try again.', false);
+}
+})
+.catch(function () {
+confirmOtpEmailBtn.disabled = false;
+setVerifyStatus(emailVerifyStatus, 'Verification failed. Try again.', false);
+});
+});
+verifyPhoneBtn.addEventListener('click', function () {
+if (!/^[0-9]{6,12}$/.test(phoneInput.value.trim())) {
+setVerifyStatus(phoneVerifyStatus, 'Enter a valid mobile number first.', false);
+return;
+}
+verifyPhoneBtn.disabled = true;
+verifyPhoneBtn.textContent = 'Sending...';
+fetch(BACKEND_URL + '/api/send-otp', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ type: 'phone', value: fullPhone() })
+})
+.then(function (res) { return res.json(); })
+.then(function (data) {
+verifyPhoneBtn.disabled = false;
+verifyPhoneBtn.textContent = 'Resend Code';
+if (data.sent) {
+otpRowPhone.classList.add('sa-show');
+setVerifyStatus(phoneVerifyStatus, 'Code sent via SMS.', true);
+} else {
+setVerifyStatus(phoneVerifyStatus, 'Could not send code. Try again.', false);
+}
+})
+.catch(function () {
+verifyPhoneBtn.disabled = false;
+verifyPhoneBtn.textContent = 'Verify';
+setVerifyStatus(phoneVerifyStatus, 'Could not send code. Try again.', false);
+});
+});
+confirmOtpPhoneBtn.addEventListener('click', function () {
+var code = otpPhoneInput.value.trim();
+if (!code) return;
+confirmOtpPhoneBtn.disabled = true;
+fetch(BACKEND_URL + '/api/verify-otp', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ type: 'phone', value: fullPhone(), otp: code })
+})
+.then(function (res) { return res.json(); })
+.then(function (data) {
+confirmOtpPhoneBtn.disabled = false;
+if (data.verified) {
+phoneVerified = true;
+phoneInput.readOnly = true;
+phoneCountrySelect.disabled = true;
+otpRowPhone.classList.remove('sa-show');
+verifyPhoneBtn.classList.add('sa-verified');
+verifyPhoneBtn.textContent = 'Verified';
+verifyPhoneBtn.disabled = true;
+setVerifyStatus(phoneVerifyStatus, 'Mobile number verified.', true);
+} else {
+setVerifyStatus(phoneVerifyStatus, 'Incorrect code. Try again.', false);
+}
+})
+.catch(function () {
+confirmOtpPhoneBtn.disabled = false;
+setVerifyStatus(phoneVerifyStatus, 'Verification failed. Try again.', false);
+});
+});
+var PERSONAL_EMAIL_DOMAINS = [
+'gmail.com', 'yahoo.com', 'yahoo.co.in', 'hotmail.com', 'outlook.com', 'live.com',
+'icloud.com', 'rediffmail.com', 'protonmail.com', 'aol.com', 'msn.com', 'yandex.com'
+];
+function isPersonalEmailDomain(value) {
+var parts = (value || '').trim().toLowerCase().split('@');
+if (parts.length !== 2) return true;
+return PERSONAL_EMAIL_DOMAINS.indexOf(parts[1]) !== -1;
+}
+var recToggle = document.getElementById('sa-rec-toggle');
+var recFields = document.getElementById('sa-rec-fields');
+var recNameInput = document.getElementById('sa-rec-name');
+var recTitleInput = document.getElementById('sa-rec-title');
+var recInstitutionInput = document.getElementById('sa-rec-institution');
+var recEmailInput = document.getElementById('sa-rec-email');
+var recEmailStatus = document.getElementById('sa-rec-email-verify-status');
+var recPhoneInput = document.getElementById('sa-rec-phone');
+var recPhoneCountrySelect = document.getElementById('sa-rec-phone-country');
+function recFullPhone() {
+return recPhoneCountrySelect.value + recPhoneInput.value.trim();
+}
+recToggle.addEventListener('change', function () {
+recFields.classList.toggle('sa-show', recToggle.checked);
+});
+recEmailInput.addEventListener('input', function () {
+var val = recEmailInput.value.trim();
+if (val === '') { recEmailStatus.textContent = ''; return; }
+if (isPersonalEmailDomain(val)) {
+setVerifyStatus(recEmailStatus, 'Personal email addresses are not accepted — use an official institutional email.', false);
+} else if (!isValidEmail(val)) {
+recEmailStatus.textContent = '';
+} else {
+setVerifyStatus(recEmailStatus, 'Looks like a valid institutional email.', true);
+}
+});
+var DEGREE_LIST = [
+'B.A. (Bachelor of Arts)', 'B.A. (Hons.)', 'B.Sc. (Bachelor of Science)', 'B.Sc. (Hons.)',
+'B.Com (Bachelor of Commerce)', 'B.Com (Hons.)', 'B.Stat (Bachelor of Statistics)', 'B.Math (Bachelor of Mathematics)',
+'B.Voc (Bachelor of Vocation)',
+'BBA (Bachelor of Business Administration)', 'BBM (Bachelor of Business Management)', 'BMS (Bachelor of Management Studies)',
+'BCA (Bachelor of Computer Applications)',
+'B.Tech (Bachelor of Technology)', 'B.E. (Bachelor of Engineering)', 'B.Arch (Bachelor of Architecture)',
+'B.Planning (Bachelor of Planning)',
+'B.Tech in Computer Science', 'B.Tech in Information Technology', 'B.Tech in Electronics & Communication',
+'B.Tech in Electrical Engineering', 'B.Tech in Mechanical Engineering', 'B.Tech in Civil Engineering',
+'B.Tech in Aerospace Engineering', 'B.Tech in Chemical Engineering', 'B.Tech in Biotechnology',
+'B.Tech in Automobile Engineering', 'B.Tech in Industrial Engineering', 'B.Tech in Production Engineering',
+'B.Tech in Mining Engineering', 'B.Tech in Metallurgical Engineering', 'B.Tech in Petroleum Engineering',
+'B.Tech in Robotics & Automation', 'B.Tech in Artificial Intelligence & Data Science',
+'B.Tech in Artificial Intelligence & Machine Learning',
+'B.E. in Computer Science', 'B.E. in Information Technology', 'B.E. in Electronics & Communication',
+'B.E. in Electrical Engineering', 'B.E. in Mechanical Engineering', 'B.E. in Civil Engineering',
+'B.E. in Aerospace Engineering', 'B.E. in Chemical Engineering',
+'MBBS (Bachelor of Medicine and Bachelor of Surgery)', 'BDS (Bachelor of Dental Surgery)',
+'BAMS (Bachelor of Ayurvedic Medicine and Surgery)', 'BHMS (Bachelor of Homeopathic Medicine and Surgery)',
+'BUMS (Bachelor of Unani Medicine and Surgery)', 'B.Pharm (Bachelor of Pharmacy)',
+'BPT (Bachelor of Physiotherapy)', 'B.Sc. Nursing', 'BVSc (Bachelor of Veterinary Science)',
+'LLB (Bachelor of Laws)', 'BA LLB (Integrated)', 'BBA LLB (Integrated)',
+'B.Des (Bachelor of Design)', 'BFA (Bachelor of Fine Arts)',
+'B.Ed (Bachelor of Education)', 'B.El.Ed (Bachelor of Elementary Education)',
+'BHM (Bachelor of Hotel Management)', 'BHMCT (Bachelor of Hotel Management and Catering Technology)',
+'M.A. (Master of Arts)', 'M.Sc. (Master of Science)', 'M.Com (Master of Commerce)',
+'M.Stat (Master of Statistics)', 'M.Voc (Master of Vocation)',
+'MBA (Master of Business Administration)', 'PGDM (Post Graduate Diploma in Management)',
+'MCA (Master of Computer Applications)',
+'M.Tech (Master of Technology)', 'M.E. (Master of Engineering)', 'M.Arch (Master of Architecture)',
+'M.Planning (Master of Planning)',
+'M.Tech in Computer Science', 'M.Tech in Information Technology', 'M.Tech in Electronics & Communication',
+'M.Tech in Artificial Intelligence & Data Science', 'M.Tech in Structural Engineering',
+'MD (Doctor of Medicine)', 'MS (Master of Surgery)', 'MDS (Master of Dental Surgery)',
+'M.Pharm (Master of Pharmacy)', 'MPT (Master of Physiotherapy)', 'M.Sc. Nursing', 'MVSc (Master of Veterinary Science)',
+'LLM (Master of Laws)',
+'M.Des (Master of Design)', 'MFA (Master of Fine Arts)',
+'M.Ed (Master of Education)',
+'MHM (Master of Hotel Management)',
+'M.Phil (Master of Philosophy)', 'Ph.D. (Doctor of Philosophy)',
+'Diploma', 'PG Diploma (Postgraduate Diploma)'
+];
+function setupCombobox(inputId, listId, dataList) {
+var input = document.getElementById(inputId);
+var list = document.getElementById(listId);
+var suppress = false;
+var defaultPlaceholder = input.getAttribute('placeholder') || '';
+function render(filterText) {
+var q = (filterText || '').trim().toLowerCase();
+var matches = q === '' ? dataList : dataList.filter(function (d) {
+return d.toLowerCase().indexOf(q) !== -1;
+});
+list.innerHTML = '';
+if (!matches.length) {
+var empty = document.createElement('div');
+empty.className = 'sa-combo-empty';
+empty.textContent = 'No match found — select "Other" below to enter your own.';
+list.appendChild(empty);
+} else {
+matches.slice(0, 60).forEach(function (d) {
+var opt = document.createElement('div');
+opt.className = 'sa-combo-option';
+opt.textContent = d;
+opt.addEventListener('mousedown', function (e) {
+e.preventDefault();
+input.value = d;
+input.placeholder = defaultPlaceholder;
+list.classList.remove('sa-show');
+});
+list.appendChild(opt);
+});
+}
+var otherOpt = document.createElement('div');
+otherOpt.className = 'sa-combo-option sa-combo-other';
+otherOpt.textContent = 'Other (not listed — type your own)';
+otherOpt.addEventListener('mousedown', function (e) {
+e.preventDefault();
+input.value = '';
+input.placeholder = 'Type it here...';
+suppress = true;
+list.classList.remove('sa-show');
+input.focus();
+});
+list.appendChild(otherOpt);
+list.classList.add('sa-show');
+}
+input.addEventListener('input', function () {
+suppress = false;
+render(input.value);
+});
+input.addEventListener('focus', function () {
+if (suppress) return;
+render(input.value);
+});
+input.addEventListener('blur', function () {
+setTimeout(function () { list.classList.remove('sa-show'); }, 120);
+});
+}
+setupCombobox('sa-degree', 'sa-degree-list', DEGREE_LIST);
+var wordLimitedFields = document.querySelectorAll('textarea[data-maxwords]');
+wordLimitedFields.forEach(function (ta) {
+var maxWords = parseInt(ta.getAttribute('data-maxwords'), 10);
+var counterEl = document.querySelector('[data-counter-for="' + ta.id + '"]');
+function updateCount() {
+var n = countWords(ta.value);
+counterEl.textContent = n + ' / ' + maxWords + ' words';
+counterEl.classList.toggle('sa-over', n > maxWords);
+}
+ta.addEventListener('input', updateCount);
+updateCount();
+});
+function anyWordLimitExceeded() {
+var exceeded = false;
+wordLimitedFields.forEach(function (ta) {
+var maxWords = parseInt(ta.getAttribute('data-maxwords'), 10);
+if (countWords(ta.value) > maxWords) exceeded = true;
+});
+return exceeded;
+}
+function showStatus(msg, type) {
+statusBox.textContent = msg;
+statusBox.className = 'sa-status sa-show sa-' + type;
+}
+
+form.addEventListener('submit', function (e) {
+e.preventDefault();
+if (anyWordLimitExceeded()) {
+showStatus('One or more answers exceed the word limit. Please shorten them before submitting.', 'error');
+return;
+}
+if (!isValidEmail(document.getElementById('sa-email').value)) {
+showStatus('Please enter a valid email address (e.g. name@gmail.com).', 'error');
+return;
+}
+if (!emailVerified) {
+showStatus('Please verify your email address before submitting.', 'error');
+return;
+}
+if (!phoneVerified) {
+showStatus('Please verify your mobile number before submitting.', 'error');
+return;
+}
+var dobValue = document.getElementById('sa-dob').value;
+if (!dobValue || dobValue > '2009-12-31') {
+showStatus('Applicants must be born on or before 31 December 2009.', 'error');
+return;
+}
+if (recToggle.checked) {
+if (!recNameInput.value.trim() || !recTitleInput.value.trim() || !recInstitutionInput.value.trim()) {
+showStatus('Please complete all recommender details, or turn off the recommendation toggle.', 'error');
+return;
+}
+var recEmailVal = recEmailInput.value.trim();
+if (!isValidEmail(recEmailVal)) {
+showStatus('Please enter a valid email address for the recommender.', 'error');
+return;
+}
+if (isPersonalEmailDomain(recEmailVal)) {
+showStatus('The recommender\'s email must be an official institutional email, not a personal address.', 'error');
+return;
+}
+if (!/^[0-9]{6,12}$/.test(recPhoneInput.value.trim())) {
+showStatus('Please enter a valid mobile number for the recommender.', 'error');
+return;
+}
+}
+submitBtn.disabled = true;
+submitBtn.textContent = 'Processing...';
+showStatus('Uploading your details, please wait...', 'success');
+var file = fileInput.files[0];
+if (file && file.size > 5 * 1024 * 1024) {
+showStatus('Resume must be under 5MB.', 'error');
+submitBtn.disabled = false;
+submitBtn.textContent = 'Pay & Submit Application';
+return;
+}
+var photoFile = photoInput.files[0];
+if (photoFile && photoFile.size > 5 * 1024 * 1024) {
+showStatus('Photograph must be under 5MB.', 'error');
+submitBtn.disabled = false;
+submitBtn.textContent = 'Pay & Submit Application';
+return;
+}
+var payload = new FormData();
+payload.append('name', document.getElementById('sa-name').value);
+payload.append('email', document.getElementById('sa-email').value);
+payload.append('phone', fullPhone());
+payload.append('dob', document.getElementById('sa-dob').value);
+payload.append('linkedin', normalizeUrl(document.getElementById('sa-linkedin').value));
+payload.append('referralCode', document.getElementById('sa-referral').value);
+payload.append('college', document.getElementById('sa-college').value);
+payload.append('degree', document.getElementById('sa-degree').value);
+payload.append('specialization', document.getElementById('sa-specialization').value);
+payload.append('semester', document.getElementById('sa-semester').value);
+payload.append('gradYear', document.getElementById('sa-gradyear').value);
+payload.append('cgpa', document.getElementById('sa-cgpa').value);
+payload.append('department', document.getElementById('sa-department').value);
+payload.append('aboutYou', document.getElementById('sa-q-about').value);
+payload.append('motivation', document.getElementById('sa-q-motivation').value);
+payload.append('fitAnswer', document.getElementById('sa-q-fit').value);
+payload.append('achievement', document.getElementById('sa-q-achievement').value);
+payload.append('aiExperience', document.getElementById('sa-q-ai').value);
+payload.append('portfolio', normalizeUrl(document.getElementById('sa-portfolio').value));
+payload.append('resume', file);
+payload.append('photo', photoFile);
+payload.append('hasRecommendation', recToggle.checked ? 'true' : 'false');
+payload.append('recommenderName', recToggle.checked ? recNameInput.value.trim() : '');
+payload.append('recommenderTitle', recToggle.checked ? recTitleInput.value.trim() : '');
+payload.append('recommenderInstitution', recToggle.checked ? recInstitutionInput.value.trim() : '');
+payload.append('recommenderEmail', recToggle.checked ? recEmailInput.value.trim() : '');
+payload.append('recommenderPhone', recToggle.checked ? recFullPhone() : '');
+fetch(BACKEND_URL + '/api/apply', {
+method: 'POST',
+body: payload
+})
+.then(function (res) {
+if (!res.ok) throw new Error('submit-failed');
+return res.json();
+})
+.then(function (data) {
+var options = {
+key: RAZORPAY_KEY_ID,
+amount: data.amount,
+currency: data.currency,
+name: 'Seraphic Atelier',
+description: 'Internship Registration Fee',
+order_id: data.orderId,
+prefill: {
+name: document.getElementById('sa-name').value,
+email: document.getElementById('sa-email').value,
+contact: fullPhone()
+},
+theme: { color: '#B68A60' },
+handler: function (response) {
+fetch(BACKEND_URL + '/api/verify-payment', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+razorpay_order_id: response.razorpay_order_id,
+razorpay_payment_id: response.razorpay_payment_id,
+razorpay_signature: response.razorpay_signature
+})
+})
+.then(function (res) { return res.json(); })
+.then(function (verifyData) {
+if (verifyData.verified) {
+form.style.display = 'none';
+showStatus('Payment verified! Your application has been submitted. A confirmation email and SMS are on their way.', 'success');
+} else {
+showStatus('Payment could not be verified. Please contact us with your payment ID: ' + response.razorpay_payment_id, 'error');
+}
+})
+.catch(function () {
+showStatus('Payment received. Confirming your application — you will also receive an email/SMS shortly.', 'success');
+});
+},
+modal: {
+ondismiss: function () {
+showStatus('Payment cancelled. You can try again anytime.', 'error');
+submitBtn.disabled = false;
+submitBtn.textContent = 'Pay & Submit Application';
+}
+}
+};
+var rzp = new Razorpay(options);
+rzp.open();
+submitBtn.disabled = false;
+submitBtn.textContent = 'Pay & Submit Application';
+})
+.catch(function () {
+showStatus('Something went wrong submitting your application. Please try again.', 'error');
+submitBtn.disabled = false;
+submitBtn.textContent = 'Pay & Submit Application';
+});
+});
+})();
+</script>
