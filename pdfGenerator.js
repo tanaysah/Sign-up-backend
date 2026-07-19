@@ -187,13 +187,6 @@ async function generateApplicationPdf(applicant, paymentInfo) {
   w.field('Department', applicant.department);
   w.field('Portfolio', applicant.portfolio);
 
-  w.rule();
-  w.paragraph('About the applicant', applicant.about_you);
-  w.paragraph('Motivation', applicant.motivation);
-  w.paragraph('Fit for the role', applicant.fit_answer);
-  w.paragraph('Notable achievement', applicant.achievement);
-  w.paragraph('Use of AI/technology', applicant.ai_experience);
-
   if (applicant.has_recommendation) {
     w.rule();
     w.subheading('Faculty Recommendation');
