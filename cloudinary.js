@@ -13,7 +13,7 @@ function uploadResumeBuffer(buffer, filenameHint) {
       {
         resource_type: 'raw', // PDFs are 'raw' in Cloudinary
         folder: 'seraphic-atelier/resumes',
-        public_id: filenameHint.replace(/[^a-z0-9_-]/gi, '_') + '_' + Date.now(),
+        public_id: filenameHint.replace(/[^a-z0-9_-]/gi, '_') + '_' + Date.now() + '.pdf',
         overwrite: false
       },
       (err, result) => {
@@ -49,7 +49,7 @@ function uploadApplicationPdf(buffer, applicationNumber) {
       {
         resource_type: 'raw',
         folder: 'seraphic-atelier/applications',
-        public_id: applicationNumber,
+        public_id: `${applicationNumber}.pdf`,
         overwrite: true // re-generating for the same applicant replaces the old file
       },
       (err, result) => {
