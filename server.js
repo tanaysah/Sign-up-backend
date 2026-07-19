@@ -31,12 +31,12 @@ async function generateUniqueApplicationNumber() {
   throw new Error('Could not generate a unique application number after 10 attempts');
 }
 
-// ---- Shared: runs once, exactly when an applicant's payment is first confirmed ----
-// Called from both the webhook and the direct verify-payment route. The UPDATE's
+// ---- Fast path: confirms payment in the database only. Runs in well under a second. ----
+// Called from both the webhook and the payment-callback route. The UPDATE's
 // "AND status != 'paid'" guard means only the first caller to reach this actually
-// gets rows back — so PDF generation, Excel regeneration, and notifications only
-// ever fire once per applicant, no matter which path (or both) triggers it.
-async function finalizeApplicationOnPayment(orderId, paymentId, amountPaise, currency) {
+// gets a row back — so the slow background work (below) only ever fires once per
+// applicant, no matter which path (or both) triggers it.
+async function markPaymentConfirmed(orderId, paymentId) {
   const result = await pool.query(
     `UPDATE applicants
      SET status = 'paid', razorpay_payment_id = $1, paid_at = NOW()
@@ -44,11 +44,15 @@ async function finalizeApplicationOnPayment(orderId, paymentId, amountPaise, cur
      RETURNING *`,
     [paymentId, orderId]
   );
+  return result.rows[0] || null; // null means already finalized by the other path, or unknown order
+}
 
-  if (!result.rows.length) return; // already finalized by the other path, or unknown order — nothing to do
-
-  const applicant = result.rows[0];
-
+// ---- Slow path: PDF generation, Excel export, email + SMS. Intentionally NOT awaited
+// by callers — this can take many seconds (network calls to Cloudinary, Brevo, etc.),
+// and callers need to respond to the browser (redirect/webhook ack) immediately rather
+// than hold the connection open until all of this finishes. Every step has its own
+// try/catch so one failure never blocks the others. ----
+async function finalizeApplicationInBackground(applicant, amountPaise, currency, orderId, paymentId) {
   try {
     const pdfBuffer = await generateApplicationPdf(applicant, {
       amount: amountPaise, currency, orderId, paymentId
@@ -98,7 +102,11 @@ app.post(
 
       if (payload.event === 'payment.captured') {
         const payment = payload.payload.payment.entity;
-        await finalizeApplicationOnPayment(payment.order_id, payment.id, payment.amount, payment.currency);
+        const applicant = await markPaymentConfirmed(payment.order_id, payment.id);
+        if (applicant) {
+          finalizeApplicationInBackground(applicant, payment.amount, payment.currency, payment.order_id, payment.id)
+            .catch((e) => console.error('Background finalization error (webhook path):', e.message));
+        }
       }
 
       res.json({ received: true });
@@ -309,7 +317,7 @@ app.get('/api/admin/init-schema', async (req, res) => {
 // ---- Direct client-side payment verification ----
 // Complementary to the webhook above: this verifies the signature Razorpay
 // Checkout hands back to the browser on payment success. Both paths funnel
-// into the same finalizeApplicationOnPayment(), which is idempotent — whichever
+// into the same markPaymentConfirmed()/finalizeApplicationInBackground() pair,
 // fires first does the real work; the other becomes a no-op.
 app.post('/api/verify-payment', async (req, res) => {
   try {
@@ -331,7 +339,11 @@ app.post('/api/verify-payment', async (req, res) => {
 
     // Fetch authoritative amount/currency from Razorpay (the client only sends IDs + signature).
     const payment = await razorpay.payments.fetch(razorpay_payment_id);
-    await finalizeApplicationOnPayment(razorpay_order_id, razorpay_payment_id, payment.amount, payment.currency);
+    const applicant = await markPaymentConfirmed(razorpay_order_id, razorpay_payment_id);
+    if (applicant) {
+      finalizeApplicationInBackground(applicant, payment.amount, payment.currency, razorpay_order_id, razorpay_payment_id)
+        .catch((e) => console.error('Background finalization error (verify-payment path):', e.message));
+    }
 
     res.json({ verified: true });
   } catch (err) {
@@ -375,15 +387,18 @@ app.post('/api/payment-callback', express.urlencoded({ extended: true }), async 
     }
 
     const payment = await razorpay.payments.fetch(razorpay_payment_id);
-    await finalizeApplicationOnPayment(razorpay_order_id, razorpay_payment_id, payment.amount, payment.currency);
+    const applicant = await markPaymentConfirmed(razorpay_order_id, razorpay_payment_id);
 
-    const applicantResult = await pool.query(
-      `SELECT application_number FROM applicants WHERE razorpay_order_id = $1 LIMIT 1`,
-      [razorpay_order_id]
-    );
-    const applicationNumber = applicantResult.rows[0] ? applicantResult.rows[0].application_number : '';
-
+    // Redirect the browser immediately — do NOT wait for PDF/Excel/email/SMS, which can
+    // take many seconds. This is what was causing the browser to hang on Razorpay's
+    // "Payment Successful, redirecting..." screen indefinitely.
+    const applicationNumber = applicant ? applicant.application_number : '';
     res.redirect(`${baseUrl}?payment=success&app=${applicationNumber}`);
+
+    if (applicant) {
+      finalizeApplicationInBackground(applicant, payment.amount, payment.currency, razorpay_order_id, razorpay_payment_id)
+        .catch((e) => console.error('Background finalization error (callback path):', e.message));
+    }
   } catch (err) {
     console.error('Payment callback error:', err);
     res.redirect(`${FALLBACK_ORIGIN}?payment=failed`);
