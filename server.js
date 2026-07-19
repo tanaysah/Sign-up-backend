@@ -197,7 +197,7 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
       department, aboutYou, motivation, fitAnswer, achievement, aiExperience,
       portfolio,
       hasRecommendation, recommenderName, recommenderTitle, recommenderInstitution,
-      recommenderEmail, recommenderPhone
+      recommenderEmail, recommenderPhone, pageUrl
     } = req.body;
 
     const requiredFields = { name, email, phone, dob, college, degree, specialization, semester, gradYear, cgpa, department, aboutYou, motivation, fitAnswer, achievement, aiExperience };
@@ -260,7 +260,7 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
       amount: feeAmount,
       currency: 'INR',
       receipt: `internship_${Date.now()}`,
-      notes: { name, email, department, applicationNumber }
+      notes: { name, email, department, applicationNumber, pageUrl: pageUrl || '' }
     });
 
     await pool.query(
@@ -303,6 +303,22 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 
+// One-time DB setup, usable from a browser when shell access isn't available (e.g. Render free tier).
+// Protected by a secret so random visitors can't trigger it. Safe to call more than once —
+// every statement is "CREATE TABLE IF NOT EXISTS", so it never overwrites or duplicates anything.
+app.get('/api/admin/init-schema', async (req, res) => {
+  if (!process.env.ADMIN_INIT_SECRET || req.query.secret !== process.env.ADMIN_INIT_SECRET) {
+    return res.status(403).json({ error: 'forbidden' });
+  }
+  try {
+    await pool.initSchema();
+    res.json({ success: true, message: 'Schema ready.' });
+  } catch (err) {
+    console.error('Schema init failed:', err);
+    res.status(500).json({ error: 'init_failed', message: err.message });
+  }
+});
+
 // ---- Direct client-side payment verification ----
 // Complementary to the webhook above: this verifies the signature Razorpay
 // Checkout hands back to the browser on payment success. Both paths funnel
@@ -334,6 +350,56 @@ app.post('/api/verify-payment', async (req, res) => {
   } catch (err) {
     console.error('Verify-payment error:', err);
     res.status(500).json({ error: 'verification_failed' });
+  }
+});
+
+// ---- Redirect-based payment confirmation ----
+// Razorpay Checkout auto-submits a POST here (via callback_url + redirect:true) after
+// a successful payment. This is more reliable than the in-page JS handler above, because
+// on mobile — especially UPI app-switching — the browser can reload or lose JS state
+// entirely; a real HTTP redirect survives that, while in-memory JS variables don't.
+app.post('/api/payment-callback', express.urlencoded({ extended: true }), async (req, res) => {
+  const FALLBACK_ORIGIN = process.env.FRONTEND_ORIGIN || 'https://seraphicatelier.com';
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+    let pageUrl = FALLBACK_ORIGIN;
+    try {
+      const order = await razorpay.orders.fetch(razorpay_order_id);
+      if (order.notes && order.notes.pageUrl) pageUrl = order.notes.pageUrl;
+    } catch (e) {
+      console.error('Could not fetch order for redirect target:', e.message);
+    }
+    // Strip any existing query string so we don't accumulate duplicate params on retries.
+    const baseUrl = pageUrl.split('?')[0];
+
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.redirect(`${baseUrl}?payment=failed`);
+    }
+
+    const expectedSignature = crypto
+      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+      .digest('hex');
+
+    if (expectedSignature !== razorpay_signature) {
+      console.warn('Callback signature mismatch — not marking as paid.');
+      return res.redirect(`${baseUrl}?payment=failed`);
+    }
+
+    const payment = await razorpay.payments.fetch(razorpay_payment_id);
+    await finalizeApplicationOnPayment(razorpay_order_id, razorpay_payment_id, payment.amount, payment.currency);
+
+    const applicantResult = await pool.query(
+      `SELECT application_number FROM applicants WHERE razorpay_order_id = $1 LIMIT 1`,
+      [razorpay_order_id]
+    );
+    const applicationNumber = applicantResult.rows[0] ? applicantResult.rows[0].application_number : '';
+
+    res.redirect(`${baseUrl}?payment=success&app=${applicationNumber}`);
+  } catch (err) {
+    console.error('Payment callback error:', err);
+    res.redirect(`${FALLBACK_ORIGIN}?payment=failed`);
   }
 });
 
