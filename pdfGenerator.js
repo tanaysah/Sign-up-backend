@@ -10,7 +10,7 @@ const GREY = rgb(0.36, 0.39, 0.45);
 
 function fetchBuffer(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
+    const req = https.get(url, (res) => {
       if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         return fetchBuffer(res.headers.location).then(resolve).catch(reject);
       }
@@ -19,6 +19,9 @@ function fetchBuffer(url) {
       res.on('data', (c) => chunks.push(c));
       res.on('end', () => resolve(Buffer.concat(chunks)));
     }).on('error', reject);
+    req.setTimeout(15000, () => {
+      req.destroy(new Error('Fetch timed out after 15s for ' + url));
+    });
   });
 }
 
