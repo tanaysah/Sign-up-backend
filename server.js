@@ -112,11 +112,6 @@ app.post(
 // Normal JSON/multipart parsing for everything else.
 app.use(express.json());
 
-function countWords(str) {
-  const trimmed = (str || '').trim();
-  return trimmed === '' ? 0 : trimmed.split(/\s+/).length;
-}
-
 function generateOtp() {
   return String(Math.floor(100000 + Math.random() * 900000)); // 6 digits
 }
@@ -194,13 +189,12 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
     const {
       name, email, phone, dob, linkedin, referralCode,
       college, degree, specialization, semester, gradYear, cgpa,
-      department, aboutYou, motivation, fitAnswer, achievement, aiExperience,
-      portfolio,
+      department, portfolio,
       hasRecommendation, recommenderName, recommenderTitle, recommenderInstitution,
       recommenderEmail, recommenderPhone, pageUrl
     } = req.body;
 
-    const requiredFields = { name, email, phone, dob, college, degree, specialization, semester, gradYear, cgpa, department, aboutYou, motivation, fitAnswer, achievement, aiExperience };
+    const requiredFields = { name, email, phone, dob, college, degree, specialization, semester, gradYear, cgpa, department };
     for (const [key, value] of Object.entries(requiredFields)) {
       if (!value) return res.status(400).json({ error: 'missing_fields', field: key });
     }
@@ -244,13 +238,6 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
       }
     }
 
-    const wordLimits = { aboutYou: 200, motivation: 200, fitAnswer: 250, achievement: 250, aiExperience: 250 };
-    for (const [field, limit] of Object.entries(wordLimits)) {
-      if (countWords(req.body[field]) > limit) {
-        return res.status(400).json({ error: 'word_limit_exceeded', field });
-      }
-    }
-
     const resumeUrl = await uploadResumeBuffer(req.files.resume[0].buffer, `${name}_resume`);
     const photoUrl = await uploadPhotoBuffer(req.files.photo[0].buffer, `${name}_photo`);
     const applicationNumber = await generateUniqueApplicationNumber();
@@ -273,7 +260,7 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
       [
         applicationNumber, name, email, phone, dob, linkedin || null, referralCode || null,
         college, degree, specialization, parseInt(semester, 10), parseInt(gradYear, 10), cgpa,
-        department, aboutYou, motivation, fitAnswer, achievement, aiExperience, portfolio || null,
+        department, '', '', '', '', '', portfolio || null,
         resumeUrl, photoUrl, recommending,
         recommending ? recommenderName : null,
         recommending ? recommenderTitle : null,
