@@ -61,4 +61,22 @@ function uploadMasterExcel(buffer) {
   });
 }
 
-module.exports = { uploadResumeBuffer, uploadApplicationPdf, uploadMasterExcel };
+function uploadLeadsExcel(buffer) {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: 'raw',
+        folder: 'seraphic-atelier',
+        public_id: 'leads-master', // fixed id — always overwrites, always one live file
+        overwrite: true
+      },
+      (err, result) => {
+        if (err) return reject(err);
+        resolve(result.secure_url);
+      }
+    );
+    stream.end(buffer);
+  });
+}
+
+module.exports = { uploadResumeBuffer, uploadApplicationPdf, uploadMasterExcel, uploadLeadsExcel };
