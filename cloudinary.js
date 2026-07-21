@@ -25,24 +25,6 @@ function uploadResumeBuffer(buffer, filenameHint) {
   });
 }
 
-function uploadPhotoBuffer(buffer, filenameHint) {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        resource_type: 'image',
-        folder: 'seraphic-atelier/photos',
-        public_id: filenameHint.replace(/[^a-z0-9_-]/gi, '_') + '_' + Date.now(),
-        overwrite: false
-      },
-      (err, result) => {
-        if (err) return reject(err);
-        resolve(result.secure_url);
-      }
-    );
-    stream.end(buffer);
-  });
-}
-
 function uploadApplicationPdf(buffer, applicationNumber) {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -79,4 +61,4 @@ function uploadMasterExcel(buffer) {
   });
 }
 
-module.exports = { uploadResumeBuffer, uploadPhotoBuffer, uploadApplicationPdf, uploadMasterExcel };
+module.exports = { uploadResumeBuffer, uploadApplicationPdf, uploadMasterExcel };
