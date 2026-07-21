@@ -296,6 +296,33 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }]), async (
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 
+// ---- Polling fallback for the frontend ----
+// Razorpay's own docs confirm that for payments completed via a mobile UPI app,
+// the browser isn't always redirected back automatically after payment — a platform
+// limitation, not something callback_url can fully guarantee. This endpoint lets the
+// page ask "has this order been paid yet?" independently of whether that redirect fires,
+// so the success screen can still show even when Razorpay's own redirect doesn't.
+app.get('/api/application-status', async (req, res) => {
+  try {
+    const { orderId } = req.query;
+    if (!orderId) return res.status(400).json({ error: 'missing_order_id' });
+
+    const result = await pool.query(
+      `SELECT status, application_number FROM applicants WHERE razorpay_order_id = $1 LIMIT 1`,
+      [orderId]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'not_found' });
+
+    res.json({
+      status: result.rows[0].status,
+      applicationNumber: result.rows[0].application_number
+    });
+  } catch (err) {
+    console.error('Application-status check error:', err);
+    res.status(500).json({ error: 'check_failed' });
+  }
+});
+
 // One-time DB setup, usable from a browser when shell access isn't available (e.g. Render free tier).
 // Protected by a secret so random visitors can't trigger it. Safe to call more than once —
 // every statement is "CREATE TABLE IF NOT EXISTS", so it never overwrites or duplicates anything.
