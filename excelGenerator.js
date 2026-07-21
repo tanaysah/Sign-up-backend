@@ -2,7 +2,7 @@ const ExcelJS = require('exceljs');
 
 async function generateMasterExcel(pool) {
   const result = await pool.query(
-    `SELECT application_number, name, email, phone, dob, linkedin, referral_code,
+    `SELECT application_number, name, email, phone, dob, linkedin,
             college, degree, specialization, semester, grad_year, cgpa,
             department, portfolio, resume_url, application_pdf_url,
             has_recommendation, recommender_name, recommender_title, recommender_institution,
@@ -23,7 +23,6 @@ async function generateMasterExcel(pool) {
     { header: 'Phone', key: 'phone', width: 16 },
     { header: 'Date of Birth', key: 'dob', width: 14 },
     { header: 'LinkedIn', key: 'linkedin', width: 24 },
-    { header: 'Referral Code', key: 'referral_code', width: 12 },
     { header: 'College / University', key: 'college', width: 26 },
     { header: 'Degree', key: 'degree', width: 22 },
     { header: 'Specialization', key: 'specialization', width: 22 },
