@@ -6,10 +6,10 @@ const crypto = require('crypto');
 const Razorpay = require('razorpay');
 
 const pool = require('./db');
-const { uploadResumeBuffer, uploadApplicationPdf, uploadMasterExcel } = require('./cloudinary');
+const { uploadResumeBuffer, uploadApplicationPdf, uploadMasterExcel, uploadLeadsExcel } = require('./cloudinary');
 const { sendConfirmationEmail, sendConfirmationSms, sendOtpEmail, sendOtpSms } = require('./notify');
 const { generateApplicationPdf } = require('./pdfGenerator');
-const { generateMasterExcel } = require('./excelGenerator');
+const { generateMasterExcel, generateLeadsExcel } = require('./excelGenerator');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
@@ -68,6 +68,17 @@ async function finalizeApplicationInBackground(applicant, amountPaise, currency,
     await uploadMasterExcel(excelBuffer);
   } catch (e) {
     console.error('Excel export failed:', e.message);
+  }
+
+  try {
+    await pool.query(
+      `UPDATE leads SET status = 'completed', updated_at = NOW() WHERE email = $1 AND phone = $2`,
+      [applicant.email, applicant.phone]
+    );
+    const leadsExcelBuffer = await generateLeadsExcel(pool);
+    await uploadLeadsExcel(leadsExcelBuffer);
+  } catch (e) {
+    console.error('Leads Excel update failed:', e.message);
   }
 
   await Promise.all([
@@ -295,6 +306,36 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }]), async (
 });
 
 app.get('/health', (req, res) => res.json({ ok: true }));
+
+// ---- Drop-off recovery: captures a lead as soon as Name + Email + Mobile are all
+// filled, well before the applicant finishes the rest of the form or pays. Upserts
+// by (email, phone) so re-filling the same fields doesn't create duplicate rows.
+// Status flips to 'completed' automatically once/if this person's payment is confirmed
+// (see markPaymentConfirmed below). ----
+app.post('/api/capture-lead', async (req, res) => {
+  try {
+    const { name, email, phone } = req.body;
+    if (!name || !email || !phone) return res.status(400).json({ error: 'missing_fields' });
+
+    await pool.query(
+      `INSERT INTO leads (name, email, phone, status, updated_at)
+       VALUES ($1, $2, $3, 'pending', NOW())
+       ON CONFLICT (email, phone)
+       DO UPDATE SET name = EXCLUDED.name, updated_at = NOW()
+       WHERE leads.status != 'completed'`,
+      [name, email, phone]
+    );
+
+    generateLeadsExcel(pool).then(uploadLeadsExcel).catch((e) =>
+      console.error('Leads Excel export failed:', e.message)
+    );
+
+    res.json({ captured: true });
+  } catch (err) {
+    console.error('Capture-lead error:', err);
+    res.status(500).json({ error: 'capture_failed' });
+  }
+});
 
 // ---- Polling fallback for the frontend ----
 // Razorpay's own docs confirm that for payments completed via a mobile UPI app,
