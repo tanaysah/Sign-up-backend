@@ -50,7 +50,7 @@ class PageWriter {
     this.fontBold = fontBold;
     this.page = null;
     this.y = 0;
-    this.reserveTopRight = 0; // space to avoid on the current page's top-right (for photo)
+    this.reserveTopRight = 0; // no longer used (photo removed), kept for structural simplicity
   }
   newPage(reserveTopRight) {
     this.page = this.doc.addPage([PAGE_W, PAGE_H]);
@@ -119,9 +119,8 @@ async function generateApplicationPdf(applicant, paymentInfo) {
   const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
   const w = new PageWriter(doc, fontRegular, fontBold);
 
-  // ---- Page 1: header (brand / program / big department name) + photo + core details ----
-  const PHOTO_RESERVE = 140; // 110pt photo box + ~30pt gap
-  w.newPage(PHOTO_RESERVE);
+  // ---- Page 1: header (brand / program / big department name) + core details ----
+  w.newPage(0);
 
   w.page.drawRectangle({ x: MARGIN, y: w.y, width: 40, height: 2, color: GOLD });
   w.y -= 22;
@@ -144,28 +143,6 @@ async function generateApplicationPdf(applicant, paymentInfo) {
     x: MARGIN, y: w.y, size: 11, font: fontRegular, color: GREY
   });
   w.y -= 20;
-
-  // Photo, top-right
-  try {
-    const photoBytes = new Uint8Array(await fetchBuffer(applicant.photo_url));
-    let img;
-    try { img = await doc.embedJpg(photoBytes); }
-    catch (e) { img = await doc.embedPng(photoBytes); }
-    const boxW = 110, boxH = 130;
-    const scale = Math.min(boxW / img.width, boxH / img.height);
-    const dw = img.width * scale, dh = img.height * scale;
-    w.page.drawImage(img, {
-      x: PAGE_W - MARGIN - boxW + (boxW - dw) / 2,
-      y: PAGE_H - MARGIN - boxH + (boxH - dh) / 2,
-      width: dw, height: dh
-    });
-  } catch (e) {
-    console.error('Photo embed failed:', e.message);
-  }
-
-  // Content below must clear BOTH the (possibly two-line) header text and the photo box, whichever is taller.
-  w.y = Math.min(w.y, PAGE_H - MARGIN - 130) - 16;
-  w.reserveTopRight = 0; // photo zone is behind us now; use full width from here on
 
   w.rule();
   w.subheading('Personal Information');
