@@ -60,4 +60,37 @@ async function generateMasterExcel(pool) {
   return Buffer.from(buffer);
 }
 
-module.exports = { generateMasterExcel };
+async function generateLeadsExcel(pool) {
+  const result = await pool.query(
+    `SELECT name, email, phone, status, created_at, updated_at
+     FROM leads
+     ORDER BY created_at ASC`
+  );
+
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet('Leads');
+
+  sheet.columns = [
+    { header: 'Name', key: 'name', width: 22 },
+    { header: 'Email', key: 'email', width: 26 },
+    { header: 'Mobile', key: 'phone', width: 18 },
+    { header: 'Status', key: 'status', width: 14 },
+    { header: 'First Seen', key: 'created_at', width: 20 },
+    { header: 'Last Updated', key: 'updated_at', width: 20 }
+  ];
+  sheet.getRow(1).font = { bold: true };
+
+  result.rows.forEach((r) => {
+    sheet.addRow({
+      ...r,
+      status: r.status === 'completed' ? 'Done' : 'Not Done',
+      created_at: r.created_at ? r.created_at.toISOString() : '',
+      updated_at: r.updated_at ? r.updated_at.toISOString() : ''
+    });
+  });
+
+  const buffer = await workbook.xlsx.writeBuffer();
+  return Buffer.from(buffer);
+}
+
+module.exports = { generateMasterExcel, generateLeadsExcel };
