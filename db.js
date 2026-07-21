@@ -70,6 +70,8 @@ async function initSchema() {
       UNIQUE(email, phone)
     );
   `);
+  await pool.query(`ALTER TABLE applicants ADD COLUMN IF NOT EXISTS semester_marks TEXT;`);
+  await pool.query(`ALTER TABLE applicants ADD COLUMN IF NOT EXISTS twelfth_marks TEXT;`);
   console.log('Schema ready.');
 }
 
