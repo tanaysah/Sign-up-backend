@@ -207,13 +207,13 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }]), async (
   try {
     const {
       name, email, phone, dob, linkedin, referralCode,
-      college, degree, specialization, semester, gradYear, cgpa, semMarks, twelfthMarks,
+      college, degree, specialization, gradYear,
       department, portfolio,
       hasRecommendation, recommenderName, recommenderTitle, recommenderInstitution,
       recommenderEmail, recommenderPhone, pageUrl
     } = req.body;
 
-    const requiredFields = { name, email, phone, dob, college, degree, specialization, semester, gradYear, cgpa, semMarks, twelfthMarks, department };
+    const requiredFields = { name, email, phone, dob, college, degree, specialization, gradYear, department };
     for (const [key, value] of Object.entries(requiredFields)) {
       if (!value) return res.status(400).json({ error: 'missing_fields', field: key });
     }
@@ -269,15 +269,15 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }]), async (
 
     await pool.query(
       `INSERT INTO applicants
-        (application_number, name, email, phone, dob, linkedin, referral_code, college, degree, specialization, semester, grad_year, cgpa,
-         semester_marks, twelfth_marks, department, about_you, motivation, fit_answer, achievement, ai_experience, portfolio,
+        (application_number, name, email, phone, dob, linkedin, referral_code, college, degree, specialization, grad_year,
+         department, about_you, motivation, fit_answer, achievement, ai_experience, portfolio,
          resume_url, has_recommendation, recommender_name, recommender_title,
          recommender_institution, recommender_email, recommender_phone, razorpay_order_id, status)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,'pending')`,
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,'pending')`,
       [
         applicationNumber, name, email, phone, dob, linkedin || null, referralCode || null,
-        college, degree, specialization, parseInt(semester, 10), parseInt(gradYear, 10), cgpa,
-        semMarks, twelfthMarks, department, '', '', '', '', '', portfolio || null,
+        college, degree, specialization, parseInt(gradYear, 10),
+        department, '', '', '', '', '', portfolio || null,
         resumeUrl, recommending,
         recommending ? recommenderName : null,
         recommending ? recommenderTitle : null,
