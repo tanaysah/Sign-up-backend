@@ -58,15 +58,29 @@ async function initSchema() {
       created_at TIMESTAMP DEFAULT NOW()
     );
   `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS leads (
+      id SERIAL PRIMARY KEY,
+      name TEXT,
+      email TEXT NOT NULL,
+      phone TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending', -- 'pending' | 'completed'
+      created_at TIMESTAMP DEFAULT NOW(),
+      updated_at TIMESTAMP DEFAULT NOW(),
+      UNIQUE(email, phone)
+    );
+  `);
   console.log('Schema ready.');
-  await pool.end();
 }
 
 if (require.main === module) {
-  initSchema().catch((err) => {
-    console.error('Schema init failed:', err);
-    process.exit(1);
-  });
+  initSchema()
+    .then(() => pool.end())
+    .catch((err) => {
+      console.error('Schema init failed:', err);
+      process.exit(1);
+    });
 }
 
 module.exports = pool;
+module.exports.initSchema = initSchema;
