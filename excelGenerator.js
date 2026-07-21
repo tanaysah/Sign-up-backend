@@ -3,7 +3,7 @@ const ExcelJS = require('exceljs');
 async function generateMasterExcel(pool) {
   const result = await pool.query(
     `SELECT application_number, name, email, phone, dob, linkedin,
-            college, degree, specialization, semester, grad_year, cgpa,
+            college, degree, specialization, semester, grad_year, cgpa, semester_marks, twelfth_marks,
             department, portfolio, resume_url, application_pdf_url,
             has_recommendation, recommender_name, recommender_title, recommender_institution,
             recommender_email, recommender_phone,
@@ -29,6 +29,8 @@ async function generateMasterExcel(pool) {
     { header: 'Semester', key: 'semester', width: 10 },
     { header: 'Graduation Year', key: 'grad_year', width: 14 },
     { header: 'CGPA', key: 'cgpa', width: 10 },
+    { header: 'Semester Marks (%)', key: 'semester_marks', width: 14 },
+    { header: '12th/HSC Marks (%)', key: 'twelfth_marks', width: 14 },
     { header: 'Department', key: 'department', width: 16 },
     { header: 'Portfolio', key: 'portfolio', width: 24 },
     { header: 'Resume URL', key: 'resume_url', width: 30 },
