@@ -161,6 +161,8 @@ async function generateApplicationPdf(applicant, paymentInfo) {
   w.field('Current Semester', applicant.semester);
   w.field('Expected Graduation Year', applicant.grad_year);
   w.field('CGPA', applicant.cgpa);
+  w.field('Latest Semester Marks (%)', applicant.semester_marks);
+  w.field('12th / HSC Marks (%)', applicant.twelfth_marks);
 
   w.rule();
   w.subheading('Internship Application');
