@@ -4,7 +4,7 @@ async function generateMasterExcel(pool) {
   const result = await pool.query(
     `SELECT application_number, name, email, phone, dob, linkedin, referral_code,
             college, degree, specialization, semester, grad_year, cgpa,
-            department, portfolio, resume_url, photo_url, application_pdf_url,
+            department, portfolio, resume_url, application_pdf_url,
             has_recommendation, recommender_name, recommender_title, recommender_institution,
             recommender_email, recommender_phone,
             status, razorpay_order_id, razorpay_payment_id, created_at, paid_at
@@ -33,7 +33,6 @@ async function generateMasterExcel(pool) {
     { header: 'Department', key: 'department', width: 16 },
     { header: 'Portfolio', key: 'portfolio', width: 24 },
     { header: 'Resume URL', key: 'resume_url', width: 30 },
-    { header: 'Photo URL', key: 'photo_url', width: 30 },
     { header: 'Application PDF URL', key: 'application_pdf_url', width: 30 },
     { header: 'Has Recommendation', key: 'has_recommendation', width: 16 },
     { header: 'Recommender Name', key: 'recommender_name', width: 20 },
