@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const Razorpay = require('razorpay');
 
 const pool = require('./db');
-const { uploadResumeBuffer, uploadPhotoBuffer, uploadApplicationPdf, uploadMasterExcel } = require('./cloudinary');
+const { uploadResumeBuffer, uploadApplicationPdf, uploadMasterExcel } = require('./cloudinary');
 const { sendConfirmationEmail, sendConfirmationSms, sendOtpEmail, sendOtpSms } = require('./notify');
 const { generateApplicationPdf } = require('./pdfGenerator');
 const { generateMasterExcel } = require('./excelGenerator');
@@ -192,7 +192,7 @@ function isPersonalEmailDomain(value) {
   return PERSONAL_EMAIL_DOMAINS.includes(parts[1]);
 }
 
-app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: 'photo', maxCount: 1 }]), async (req, res) => {
+app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }]), async (req, res) => {
   try {
     const {
       name, email, phone, dob, linkedin, referralCode,
@@ -207,7 +207,6 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
       if (!value) return res.status(400).json({ error: 'missing_fields', field: key });
     }
     if (!req.files || !req.files.resume) return res.status(400).json({ error: 'missing_fields', field: 'resume' });
-    if (!req.files.photo) return res.status(400).json({ error: 'missing_fields', field: 'photo' });
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     if (!emailPattern.test((email || '').trim())) {
@@ -247,7 +246,6 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
     }
 
     const resumeUrl = await uploadResumeBuffer(req.files.resume[0].buffer, `${name}_resume`);
-    const photoUrl = await uploadPhotoBuffer(req.files.photo[0].buffer, `${name}_photo`);
     const applicationNumber = await generateUniqueApplicationNumber();
 
     const feeAmount = parseInt(process.env.INTERNSHIP_FEE_PAISE || '99900', 10);
@@ -262,14 +260,14 @@ app.post('/api/apply', upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
       `INSERT INTO applicants
         (application_number, name, email, phone, dob, linkedin, referral_code, college, degree, specialization, semester, grad_year, cgpa,
          department, about_you, motivation, fit_answer, achievement, ai_experience, portfolio,
-         resume_url, photo_url, has_recommendation, recommender_name, recommender_title,
+         resume_url, has_recommendation, recommender_name, recommender_title,
          recommender_institution, recommender_email, recommender_phone, razorpay_order_id, status)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,'pending')`,
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,'pending')`,
       [
         applicationNumber, name, email, phone, dob, linkedin || null, referralCode || null,
         college, degree, specialization, parseInt(semester, 10), parseInt(gradYear, 10), cgpa,
         department, '', '', '', '', '', portfolio || null,
-        resumeUrl, photoUrl, recommending,
+        resumeUrl, recommending,
         recommending ? recommenderName : null,
         recommending ? recommenderTitle : null,
         recommending ? recommenderInstitution : null,
