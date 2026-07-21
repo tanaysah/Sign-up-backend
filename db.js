@@ -72,6 +72,8 @@ async function initSchema() {
   `);
   await pool.query(`ALTER TABLE applicants ADD COLUMN IF NOT EXISTS semester_marks TEXT;`);
   await pool.query(`ALTER TABLE applicants ADD COLUMN IF NOT EXISTS twelfth_marks TEXT;`);
+  await pool.query(`ALTER TABLE applicants ALTER COLUMN semester DROP NOT NULL;`);
+  await pool.query(`ALTER TABLE applicants ALTER COLUMN cgpa DROP NOT NULL;`);
   console.log('Schema ready.');
 }
 
